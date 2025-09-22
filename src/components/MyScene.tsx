@@ -20,7 +20,6 @@ import {
 } from "@babylonjs/core"; // 导入 Babylon.js 核心库
 import "@babylonjs/loaders"; // 导入 Babylon.js 的加载器模块
 import "@babylonjs/inspector"; // 导入 Babylon.js 的 Inspector 模块
-import "../css/MyScene.css"; // 导入自定义的 CSS 文件
 import { Inspector } from "@babylonjs/inspector";
 import { useAppContext } from "../context/AppContext";
 import { enableBillboardPlot } from "../sceneUlti/billboard";
@@ -38,7 +37,7 @@ export const shouldEnableShadow = (engine: Engine): boolean => {
 }
 
 const MyScene = () => {
-  const { setProgress } = useAppContext();
+  const { setProgress,selectedBlock,setSelectedBlock } = useAppContext();
   const onProgress = setProgress;
   const canvasRef = useRef(null); // 使用 useRef 创建一个引用，用于绑定到 canvas 元素
   const [model, setModel] = useState(); // 使用 useState 创建一个状态，用于存储加载的模型
@@ -48,7 +47,12 @@ const MyScene = () => {
   const sunRef = useRef<DirectionalLight | null>(null);
   const skyTextureRef = useRef<any>(null);
   const engineRef = useRef<Engine | null>(null);
+  const selectedBlockRef = useRef<string | null>(null);
 
+  useEffect(() => {
+    selectedBlockRef.current = selectedBlock;
+  }, [selectedBlock])
+  
 
   useEffect(() => {
     if (model && currentScene && currentCamera) {
@@ -69,7 +73,9 @@ const MyScene = () => {
         if (pointerInfo.type === PointerEventTypes.POINTERPICK) {
           const pickedMesh = pointerInfo.pickInfo?.pickedMesh;
           if (pickedMesh) {
-            // console.log("Picked mesh:", pickedMesh.name);
+            if(selectedBlockRef.current == null){
+
+            }
           }
         }
       });

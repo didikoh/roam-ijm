@@ -1,5 +1,5 @@
 import { Axis, Mesh, Space, TransformNode, type Scene } from "@babylonjs/core";
-import { ame_types, AreaLabels } from "./Amenities";
+import { ame_types, AreaLabels } from "./amenities";
 
 /** 让指定节点（或其下首个 Mesh）持续面向相机 */
 export function enableBillboardPlot(
