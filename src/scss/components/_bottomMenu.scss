@@ -1,0 +1,77 @@
+.bottom-menu {
+  position: absolute;
+  bottom: 3rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1;
+
+  &__container {
+    position: relative;
+    padding: 10px 20px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 32px;
+    box-sizing: border-box;
+  }
+
+  &__item {
+    z-index: 2;
+    position: relative;
+    width: 50px;
+    height: 50px; // 使按钮为正方形
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.5s;
+    padding: 0; // 移除内边距
+
+    img {
+      width: 70%; // 图片宽度为按钮宽度的70%
+      height: auto;
+      max-height: 60%; // 图片最大高度为按钮高度的60%
+      margin-bottom: 5px;
+      filter: brightness(0);
+      transition: filter 0.5s;
+      display: block;
+      object-fit: contain;
+    }
+
+    span {
+      width: 100%;
+      text-align: center;
+      font-size: 0.6rem;
+      line-height: 1;
+      transition: color 0.5s;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    &:hover {
+    }
+
+    &--active {
+      transform: translateY(-25px);
+      img {
+        filter: brightness(0) invert(1) !important;
+      }
+      span {
+        color: white;
+      }
+    }
+  }
+
+  &__indicator {
+    position: absolute;
+    background: linear-gradient(90deg, #f47721 0%, #ffab71 100%);
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    top: -20px;
+    box-shadow: 0 4px 24px 0 #f47721; // 透明阴影
+  }
+}
