@@ -4,9 +4,10 @@ import AiButton from "@assets/menu/Ai-Button.png";
 import Select360VR from "@assets/menu/360VR.webp";
 import SelectRegister from "@assets/menu/register.webp";
 import { useEffect, useRef, useState } from "react";
+import { useAppContext } from "@context/AppContext";
 
 const BottomMenu = () => {
-  const [activatedMenu, setActivatedMenu] = useState<string>("");
+  const { activatedMenu, setActivatedMenu } = useAppContext();
   const [indicatorLeft, setIndicatorLeft] = useState(0);
   const btnRefs = useRef<(HTMLButtonElement | null)[]>([]);
 

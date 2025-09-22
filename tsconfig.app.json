@@ -15,6 +15,18 @@
     "noEmit": true,
     "jsx": "react-jsx",
 
+    /* Path mapping */
+    "baseUrl": ".",
+    "paths": {
+      "@components/*": ["src/components/*"],
+      "@utils/*": ["src/utils/*"],
+      "@assets/*": ["src/assets/*"],
+      "@css/*": ["src/css/*"],
+      "@scss/*": ["src/scss/*"],
+      "@context/*": ["src/context/*"],
+      "@chatbot/*": ["src/chatbot/*"]
+    },
+
     /* Linting */
     "strict": true,
     "noUnusedLocals": true,
