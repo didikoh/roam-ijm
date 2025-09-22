@@ -3,6 +3,7 @@ import BottomMenu from "./components/BottomMenu";
 import Loading from "./components/Loading";
 import Logo from "./components/Logo";
 import MyScene from "./components/MyScene";
+import RightPopup from "./components/RightPopup";
 
 const App = () => {
 
@@ -13,6 +14,7 @@ const App = () => {
       <BottomMenu />
       <MyScene />
       <Amenities />
+      <RightPopup />
     </div>
   );
 };
