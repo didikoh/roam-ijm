@@ -4,11 +4,13 @@ import AiButton from "@assets/menu/Ai-Button.png";
 import Select360VR from "@assets/menu/360VR.webp";
 import SelectRegister from "@assets/menu/register.webp";
 import { useEffect, useRef, useState } from "react";
+import { useAppContext } from "../context/AppContext";
 
 const BottomMenu = () => {
   const [activatedMenu, setActivatedMenu] = useState<string>("");
   const [indicatorLeft, setIndicatorLeft] = useState(0);
   const btnRefs = useRef<(HTMLButtonElement | null)[]>([]);
+  const { activeMenu, setActiveMenu } = useAppContext();
 
   const menuItems = [
     { img: SelectConcept, alt: "Concept", label: "CONCEPT", value: 'concept' },
@@ -26,6 +28,10 @@ const BottomMenu = () => {
     }
   }, [activatedMenu, menuItems]);
 
+  useEffect(() => {
+    setActivatedMenu(activeMenu ?? "");
+  }, [activeMenu]);
+
   return (
     <div className='bottom-menu'>
       <div className='bottom-menu__container'>
@@ -36,7 +42,10 @@ const BottomMenu = () => {
               (activatedMenu === item.value ? ' bottom-menu__item--active' : '')
             }
             key={item.label}
-            onClick={() => setActivatedMenu(item.value)}
+            onClick={() => {
+              setActivatedMenu(item.value);
+              setActiveMenu(item.value);
+            }}
             ref={el => { btnRefs.current[idx] = el; }}
           >
             <img src={item.img} alt={item.alt} />

@@ -1,0 +1,50 @@
+.concept-floating {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 2001;
+
+  &__box {
+    pointer-events: auto;
+    background: #ffffff;
+    margin: 6rem;
+    width: calc(100% - 12rem);
+    height: 80%;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+    display: grid;
+    grid-template-columns: 15% 85%;
+    gap: 1rem;
+  }
+
+  &__left {
+    min-height: 100%;
+  }
+
+  &__right {
+    min-height: 100%;
+  }
+
+  &__backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgb(0, 0, 0);
+    pointer-events: auto;
+  }
+
+  &__box {
+    pointer-events: auto;
+    background: #ffffff;
+    margin: 6rem;
+    width: calc(100% - 12rem);
+    min-height: 300px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+    display: grid;
+    grid-template-columns: 30% 70%;
+    gap: 1rem;
+  }
+}
+
+

@@ -9,6 +9,7 @@ export const AppProvider = ({ children }: any) => {
     const [activeAmenity, setActiveAmenity] = useState<string | null>(null);
     const resetCamRef = useRef<any>(null);
     const [selectedBlock, setSelectedBlock] = useState<string | null>(null);
+    const [activeMenu, setActiveMenu] = useState<string | null>(null);
 
     useEffect(() => {
         const handleResize = () => {
@@ -33,6 +34,8 @@ export const AppProvider = ({ children }: any) => {
                 resetCamRef,
                 selectedBlock,
                 setSelectedBlock,
+                activeMenu,
+                setActiveMenu,
             }}
         >
             {children}
