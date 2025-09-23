@@ -17,12 +17,18 @@ import {
   DefaultRenderingPipeline,
   ImageProcessingConfiguration,
   SSAO2RenderingPipeline,
+  Animation,
+  QuadraticEase,
+  EasingFunction,
+  Mesh,
 } from "@babylonjs/core"; // 导入 Babylon.js 核心库
 import "@babylonjs/loaders"; // 导入 Babylon.js 的加载器模块
 import "@babylonjs/inspector"; // 导入 Babylon.js 的 Inspector 模块
 import { Inspector } from "@babylonjs/inspector";
 import { useAppContext } from "../context/AppContext";
 import { enableBillboardPlot } from "../sceneUlti/billboard";
+import { resetCameraPos } from "../sceneUlti/camera";
+import { applyHighlightLayer } from "../sceneUlti/VisualEffect";
 
 export const shouldEnableShadow = (engine: Engine): boolean => {
   const isMobile = /Android|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i.test(navigator.userAgent);
@@ -37,7 +43,7 @@ export const shouldEnableShadow = (engine: Engine): boolean => {
 }
 
 const MyScene = () => {
-  const { setProgress,selectedBlock,setSelectedBlock } = useAppContext();
+  const { setProgress, selectedBlock, setSelectedBlock, selectedUnit, setSelectedUnit, resetCamRef } = useAppContext();
   const onProgress = setProgress;
   const canvasRef = useRef(null); // 使用 useRef 创建一个引用，用于绑定到 canvas 元素
   const [model, setModel] = useState(); // 使用 useState 创建一个状态，用于存储加载的模型
@@ -48,11 +54,25 @@ const MyScene = () => {
   const skyTextureRef = useRef<any>(null);
   const engineRef = useRef<Engine | null>(null);
   const selectedBlockRef = useRef<string | null>(null);
+  const selectedUnitRef = useRef<string | null>(null);
 
   useEffect(() => {
     selectedBlockRef.current = selectedBlock;
+    console.log("Selected Block:", selectedBlock);
+    if (selectedBlock != null) {
+      if (currentCamera) {
+        currentCamera.panningSensibility = 0; // 禁用平移
+      }
+    } else {
+      if (currentCamera) {
+        currentCamera.panningSensibility = 100; // 禁用平移
+      }
+    }
   }, [selectedBlock])
-  
+
+  useEffect(() => {
+    selectedUnitRef.current = selectedUnit;
+  }, [selectedUnit])
 
   useEffect(() => {
     if (model && currentScene && currentCamera) {
@@ -73,21 +93,39 @@ const MyScene = () => {
         if (pointerInfo.type === PointerEventTypes.POINTERPICK) {
           const pickedMesh = pointerInfo.pickInfo?.pickedMesh;
           if (pickedMesh) {
-            if(selectedBlockRef.current == null){
+            if (selectedBlockRef.current == null) {
+              if (pickedMesh.name.startsWith("C-")) {
+                console.log("Picked Mesh:", pickedMesh.name);
+                setSelectedBlock("Block C");
+                handleFocus("Plane.017", 60);
+              }
+            }
 
+            if (selectedBlockRef.current == "Block C") {
+              if (pickedMesh.name.startsWith("C-")) {
+                console.log("Picked Mesh:", pickedMesh.name);
+                if (pickedMesh.parent) {
+                  const parentMesh = pickedMesh.parent;
+                  // do something with parentMesh
+                  console.log(parentMesh.name);
+                  setSelectedUnit(parentMesh.name);
+                }
+                handleFocus(pickedMesh, 30);
+                const cleanedName = pickedMesh.name.replace("_primitive0", "_primitive1")
+                applyHighlightLayer(currentScene, cleanedName,"selected", new Color3(0.8, 0.8, 0));
+              }
             }
           }
         }
       });
 
-      // const resetCam = () => {
-      //   currentCamera.fov = 1.3;
-      //   currentCamera.target = new Vector3(-2151.5, 108.5, 4523);
-      //   currentCamera.alpha = 5.33;
-      //   currentCamera.beta = 1.1;
-      //   currentCamera.radius = 520.45;
-      // }
+      const resetCam = () => {
+        resetCameraPos(currentCamera, currentScene);
+        setSelectedBlock(null);
+        setSelectedUnit(null);
+      }
 
+      resetCamRef.current = resetCam;
       // // 为场景中的网格应用阴影
       //#region ShadowCaster
       // currentScene.meshes.forEach((mesh) => {
@@ -116,64 +154,72 @@ const MyScene = () => {
     }
   }, [model, currentScene, currentCamera]); // 监视模型的变化
 
-  // const handleFocus = (targetMesh: any) => {
-  //   let targetPosition;
-  //   if (targetMesh.getBoundingInfo) {
-  //     targetPosition = targetMesh.getBoundingInfo().boundingBox.centerWorld; // 获取点击网格的中心位置
-  //   } else {
-  //     targetPosition = targetMesh.getAbsolutePosition();
-  //   }
+  const handleFocus = (target: any, zoomDistance: number = 60) => {
+    let targetMesh;
+    let targetPosition;
+    if (typeof target === "string" && currentScene) {
+      const mesh = currentScene.getMeshByName(target);
+      if (!mesh) return; // 如果找不到对应的 mesh，直接返回
+      targetMesh = mesh;
+    } else {
+      targetMesh = target;
+    }
+    if (targetMesh.getBoundingInfo) {
+      targetPosition = targetMesh.getBoundingInfo().boundingBox.centerWorld; // 获取点击网格的中心位置
+    } else {
+      targetPosition = targetMesh.getAbsolutePosition();
+    }
 
 
-  //   const createAnimation = ({ property, startValue, endValue, duration }: any) => {
-  //     const animation = new Animation(
-  //       `${property}Animation`, // 动画名称
-  //       property, // 动画属性
-  //       60, // 帧率
-  //       Animation.ANIMATIONTYPE_FLOAT, // 动画类型
-  //       Animation.ANIMATIONLOOPMODE_CONSTANT // 动画循环模式
-  //     );
+    const createAnimation = ({ property, startValue, endValue, duration }: any) => {
+      const animation = new Animation(
+        `${property}Animation`, // 动画名称
+        property, // 动画属性
+        60, // 帧率
+        Animation.ANIMATIONTYPE_FLOAT, // 动画类型
+        Animation.ANIMATIONLOOPMODE_CONSTANT // 动画循环模式
+      );
 
-  //     animation.setKeys([
-  //       { frame: 0, value: startValue }, // 起始值
-  //       { frame: duration, value: endValue }, // 目标值
-  //     ]);
+      animation.setKeys([
+        { frame: 0, value: startValue }, // 起始值
+        { frame: duration, value: endValue }, // 目标值
+      ]);
 
-  //     return animation;
-  //   };
+      return animation;
+    };
 
-  //   const animationDuration = 50; // 动画持续时间（帧数）
-  //   if (!currentCamera || !currentScene) return
-  //   const radiusAnimation = createAnimation(
-  //     {
-  //       property: "radius",
-  //       startValue: currentCamera.radius,
-  //       endValue: 300,
-  //       duration: animationDuration
-  //     }
-  //   );
+    const animationDuration = 50; // 动画持续时间（帧数）
+    if (!currentCamera || !currentScene) return
+    const radiusAnimation = createAnimation(
+      {
+        property: "radius",
+        startValue: currentCamera.radius,
+        endValue: zoomDistance,
+        duration: animationDuration
+      }
+    );
 
-  //   const targetAnimation = new Animation(
-  //     "targetAnimation", // 动画名称
-  //     "target", // 动画属性
-  //     60, // 帧率
-  //     Animation.ANIMATIONTYPE_VECTOR3, // 动画类型
-  //     Animation.ANIMATIONLOOPMODE_CONSTANT // 动画循环模式
-  //   );
+    const targetAnimation = new Animation(
+      "targetAnimation", // 动画名称
+      "target", // 动画属性
+      60, // 帧率
+      Animation.ANIMATIONTYPE_VECTOR3, // 动画类型
+      Animation.ANIMATIONLOOPMODE_CONSTANT // 动画循环模式
+    );
 
-  //   targetAnimation.setKeys([
-  //     { frame: 0, value: currentCamera.target }, // 起始目标位置
-  //     { frame: animationDuration, value: targetPosition }, // 目标位置
-  //   ]);
+    targetAnimation.setKeys([
+      { frame: 0, value: currentCamera.target }, // 起始目标位置
+      { frame: animationDuration, value: targetPosition }, // 目标位置
+    ]);
 
-  //   const easingFunction = new QuadraticEase(); // 创建二次缓动函数
-  //   easingFunction.setEasingMode(EasingFunction.EASINGMODE_EASEIN); // 设置为由慢到快
-  //   radiusAnimation.setEasingFunction(easingFunction);
-  //   targetAnimation.setEasingFunction(easingFunction);
+    const easingFunction = new QuadraticEase(); // 创建二次缓动函数
+    easingFunction.setEasingMode(EasingFunction.EASINGMODE_EASEIN); // 设置为由慢到快
+    radiusAnimation.setEasingFunction(easingFunction);
+    targetAnimation.setEasingFunction(easingFunction);
 
-  //   currentCamera.animations = [radiusAnimation, targetAnimation]; // 将动画应用到相机
-  //   currentScene.beginAnimation(currentCamera, 0, animationDuration, false); // 开始动画
-  // };
+    currentCamera.animations = [radiusAnimation, targetAnimation]; // 将动画应用到相机
+    currentScene.beginAnimation(currentCamera, 0, animationDuration, false); // 开始动画
+  };
 
   useEffect(() => {
     const canvas = canvasRef.current; // 获取 canvas 元素的引用
