@@ -10,6 +10,30 @@ const BottomMenu = () => {
   const { activatedMenu, setActivatedMenu } = useAppContext();
   const [indicatorLeft, setIndicatorLeft] = useState(0);
   const btnRefs = useRef<(HTMLButtonElement | null)[]>([]);
+  const barRef = useRef<HTMLDivElement | null>(null);
+  const animRef = useRef<number | null>(null);
+  const defaultNotchRRef = useRef<string | null>(null);
+
+  const animateActiveX = (toPx: number, durationMs = 400) => {
+    if (!barRef.current) return;
+    // cancel previous anim
+    if (animRef.current) cancelAnimationFrame(animRef.current);
+    const style = getComputedStyle(barRef.current);
+    const current = parseFloat(style.getPropertyValue("--active-x")) || 0;
+    const start = current;
+    const delta = toPx - start;
+    const t0 = performance.now();
+    const ease = (t: number) => (t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2);
+    const step = () => {
+      const p = Math.min(1, (performance.now() - t0) / durationMs);
+      const val = start + delta * ease(p);
+      barRef.current!.style.setProperty("--active-x", `${val}px`);
+      if (p < 1) {
+        animRef.current = requestAnimationFrame(step);
+      }
+    };
+    animRef.current = requestAnimationFrame(step);
+  };
 
   const menuItems = [
     { img: SelectConcept, alt: "Concept", label: "CONCEPT", value: 'concept' },
@@ -20,16 +44,36 @@ const BottomMenu = () => {
   ];
 
   useEffect(() => {
+    // cache default notch radius once
+    if (barRef.current && defaultNotchRRef.current === null) {
+      const s = getComputedStyle(barRef.current);
+      const r = s.getPropertyValue("--notch-r").trim();
+      defaultNotchRRef.current = r || "36px";
+    }
+
     const idx = menuItems.findIndex(item => item.value === activatedMenu);
     if (idx !== -1 && btnRefs.current[idx]) {
       const btn = btnRefs.current[idx];
-      setIndicatorLeft(btn.offsetLeft + btn.offsetWidth / 2 - 32); // 27.5 = indicator宽度一半
+      const left = btn.offsetLeft + btn.offsetWidth / 2 - 32;
+      setIndicatorLeft(left);
+      // animate CSS var for notch center (circle center)
+      animateActiveX(left + 32);
+      // ensure notch is visible
+      if (barRef.current && defaultNotchRRef.current) {
+        barRef.current.style.setProperty("--notch-r", defaultNotchRRef.current);
+      }
+    }
+    else {
+      // no active item → hide notch by setting radius to 0
+      if (barRef.current) {
+        barRef.current.style.setProperty("--notch-r", "0px");
+      }
     }
   }, [activatedMenu, menuItems]);
 
   return (
     <div className='bottom-menu'>
-      <div className='bottom-menu__container'>
+      <div className='bottom-menu__container' ref={barRef}>
         {menuItems.map((item, idx) => (
           <button
             className={

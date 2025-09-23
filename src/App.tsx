@@ -8,6 +8,8 @@ import Logo from "./components/Logo";
 import MyScene from "./components/MyScene";
 import RightPopup from "./components/RightPopup";
 import { useAppContext } from "@context/AppContext";
+import Concept from "./components/Concept";
+import Location from "./components/Location";
 
 const App = () => {
   const { selectedUnit } = useAppContext();
@@ -18,6 +20,8 @@ const App = () => {
       <BottomMenu />
       <MyScene />
       <Amenities />
+      <Concept />
+      <Location />
       <ChatBot />
       <RightPopup />
       <Gallery />
