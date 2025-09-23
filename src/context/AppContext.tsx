@@ -14,6 +14,7 @@ export const AppProvider = ({ children }: any) => {
     const [selectedType, setSelectedType] = useState<string | null>(null);
     const [selectedLevel, setSelectedLevel] = useState<number | null>(null);
     const [selectedSQFT, setSelectedSQFT] = useState<string | null>(null);
+    const [perspectiveIndex, setPerspectiveIndex] = useState<string | null>(null);
 
     useEffect(() => {
         const handleResize = () => {
@@ -55,7 +56,9 @@ export const AppProvider = ({ children }: any) => {
                 setSelectedType,
                 selectedSQFT,
                 setSelectedSQFT,
-                resetFilter
+                resetFilter,
+                perspectiveIndex,
+                setPerspectiveIndex
             }}
         >
             {children}

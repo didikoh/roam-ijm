@@ -1,7 +1,7 @@
 import SelectConcept from "@assets/menu/concept.webp";
 import SelectLocation from "@assets/menu/location.webp";
 import AiButton from "@assets/menu/Ai-Button.png";
-import Select360VR from "@assets/menu/360VR.webp";
+import Gallery from "@assets/menu/gallery.webp";
 import SelectRegister from "@assets/menu/register.webp";
 import { useEffect, useRef, useState } from "react";
 import { useAppContext } from "@context/AppContext";
@@ -15,7 +15,7 @@ const BottomMenu = () => {
     { img: SelectConcept, alt: "Concept", label: "CONCEPT", value: 'concept' },
     { img: SelectLocation, alt: "Location", label: "LOCATION", value: 'location' },
     { img: AiButton, alt: "AI Chatbot", label: "AI", value: 'ai' },
-    { img: Select360VR, alt: "Gallery", label: "Gallery", value: 'gallery' },
+    { img: Gallery, alt: "Gallery", label: "Gallery", value: 'gallery' },
     { img: SelectRegister, alt: "Register", label: "REGISTER", value: 'register' },
   ];
 

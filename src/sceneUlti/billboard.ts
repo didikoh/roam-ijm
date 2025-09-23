@@ -50,7 +50,7 @@ export function enableBillboardAmenities(
   mode: number = Mesh.BILLBOARDMODE_Y
 ) {
   TransformNode.BillboardUseParentOrientation = true;
-  const meshes = scene.meshes.filter((m) => m.name.includes("Ame_"));
+  const meshes = scene.transformNodes.filter((m) => m.name.includes("Ame_"));
   console.log("Amenities Labels:", meshes.length);
   if (meshes.length > 0) {
     meshes.forEach((mesh) => {
@@ -69,7 +69,7 @@ export function enableBillboardAmenities(
 
 export function setVisibleBillboardType(scene: Scene, type: string|null) {
   const typeMeshName = ame_types.find((t) => t.type === type)?.content || [];
-  const meshes = scene.meshes.filter((m) => m.name.includes("Ame_"));
+  const meshes = scene.transformNodes.filter((m) => m.name.includes("Ame_"));
   if (meshes.length > 0) {
     meshes.forEach((mesh) => {
       if (type === "all") {

@@ -2,16 +2,15 @@ import amenityAll from "@assets/amenities/amenity_all.webp";
 import amenityCommercial from "@assets/amenities/amenity_commercial.webp";
 import amenityEducation from "@assets/amenities/amenity_education.webp";
 import amenityMedical from "@assets/amenities/amenity_medical.webp";
-import amenityRts from "@assets/amenities/amenity_rts.webp";
+import amenityTransport from "@assets/amenities/amenity_transport.webp";
 import { useAppContext } from "../context/AppContext";
 
 type AmenityType =
   | "all"
   | "commercial"
   | "medical"
-  | "education-private"
-  | "education-public"
-  | "rts"
+  | "education"
+  | "transport"
   | "distance"
   | null;
 
@@ -36,22 +35,16 @@ const amenityButtons: AmenityButton[] = [
     alt: "medical",
   },
   {
-    id: "education-private",
-    label: "EDUCATION (PRIVATE)",
+    id: "education",
+    label: "EDUCATION",
     image: amenityEducation,
-    alt: "education-private",
+    alt: "education",
   },
   {
-    id: "education-public",
-    label: "EDUCATION (PUBLIC)",
-    image: amenityEducation,
-    alt: "education-public",
-  },
-  {
-    id: "rts",
-    label: "RTS STATION",
-    image: amenityRts,
-    alt: "rts-station",
+    id: "transport",
+    label: "TRANSPORT",
+    image: amenityTransport,
+    alt: "transport",
   },
   {
     id: "all",

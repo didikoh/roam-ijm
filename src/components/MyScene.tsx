@@ -22,9 +22,10 @@ import "@babylonjs/loaders"; // 导入 Babylon.js 的加载器模块
 import "@babylonjs/inspector"; // 导入 Babylon.js 的 Inspector 模块
 import { Inspector } from "@babylonjs/inspector";
 import { useAppContext } from "../context/AppContext";
-import { enableBillboardPlot } from "../sceneUlti/billboard";
+import { enableBillboardAmenities, enableBillboardPlot, setVisibleBillboardType } from "../sceneUlti/billboard";
 import { resetCameraPos } from "../sceneUlti/camera";
 import { applyHighlightLayer, clearHighlightLayer } from "../sceneUlti/VisualEffect";
+import { animateTrail } from "../sceneUlti/AnimateTexture";
 
 export const shouldEnableShadow = (engine: Engine): boolean => {
   const isMobile = /Android|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i.test(navigator.userAgent);
@@ -41,7 +42,7 @@ export const shouldEnableShadow = (engine: Engine): boolean => {
 const MyScene = () => {
   const { setProgress, selectedBlock, setSelectedBlock,
     selectedUnit, setSelectedUnit, resetCamRef,
-    selectedLevel
+    selectedLevel, setPerspectiveIndex, activeAmenity
   } = useAppContext();
   const onProgress = setProgress;
   const canvasRef = useRef(null); // 使用 useRef 创建一个引用，用于绑定到 canvas 元素
@@ -107,6 +108,12 @@ const MyScene = () => {
     }
   }, [selectedLevel])
 
+  useEffect(() => {
+    if (currentScene) {
+      setVisibleBillboardType(currentScene, activeAmenity);
+    }
+  }, [activeAmenity, currentScene]);
+
 
   useEffect(() => {
     if (model && currentScene && currentCamera) {
@@ -115,6 +122,7 @@ const MyScene = () => {
       allLevels.current = currentScene.meshes.filter(m => m.name.startsWith("C-")
         || m.name == "C_Roof" || m.name == "C_Mid_plate" || m.name == "C_Btm_plate" || m.name == "C_Panel_01"
       );
+      animateTrail(currentScene, engineRef.current!);
 
       // const minX = -600, maxX = 200, minY = 70, maxY = 600, minZ = -600, maxZ = 400;
       // 添加监听器以记录相机位置和目标和限制相机目标范围
@@ -126,6 +134,7 @@ const MyScene = () => {
       });
 
       enableBillboardPlot(currentScene);
+      enableBillboardAmenities(currentScene);
 
       // 添加点击事件以记录被点击网格的名称
       currentScene.onPointerObservable.add((pointerInfo) => {
@@ -153,6 +162,11 @@ const MyScene = () => {
                 const cleanedName = pickedMesh.name.replace("_primitive0", "_primitive1")
                 applyHighlightLayer(currentScene, cleanedName, "selected", new Color3(0.8, 0.8, 0));
               }
+            }
+
+            if (pickedMesh.name.includes("Icon_Point")) {
+              const perspective_index = pickedMesh.name.split("_")[2]
+              setPerspectiveIndex(perspective_index);
             }
           }
         }
@@ -299,7 +313,7 @@ const MyScene = () => {
             return;
           }
 
-          const KNOWN_TOTAL = 73448576;
+          const KNOWN_TOTAL = 75224512;
 
           // 加载模型
           ImportMeshAsync("./models/roam.glb", scene, {

@@ -50,6 +50,7 @@
 .amenity img {
   height: 24px;
   width: 24px;
+  filter: brightness(0) invert(1);
 }
 
 .amenity span {

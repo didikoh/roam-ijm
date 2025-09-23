@@ -1,15 +1,7 @@
 import { useEffect, useState } from "react";
 
 const suggestions = [
-  "Where exactly is Larkinton located?",
-  "What unit types are available?",
-  "What’s nearby the RTS station?",
-  "Tell me about the facilities.",
-  "Is this good for investors?",
-  "What’s the design concept?",
-  "Who is this project for?",
-  "What makes this a good buy?",
-  "Give me a quick overview.",
+  "Why is ROAM a good investment?",
 ];
 
 function shuffleCopy<T>(arr: readonly T[]): T[] {
