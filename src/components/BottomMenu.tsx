@@ -12,6 +12,7 @@ const BottomMenu = () => {
   const btnRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const barRef = useRef<HTMLDivElement | null>(null);
   const animRef = useRef<number | null>(null);
+  const defaultNotchRRef = useRef<string | null>(null);
 
   const animateActiveX = (toPx: number, durationMs = 400) => {
     if (!barRef.current) return;
@@ -43,6 +44,13 @@ const BottomMenu = () => {
   ];
 
   useEffect(() => {
+    // cache default notch radius once
+    if (barRef.current && defaultNotchRRef.current === null) {
+      const s = getComputedStyle(barRef.current);
+      const r = s.getPropertyValue("--notch-r").trim();
+      defaultNotchRRef.current = r || "36px";
+    }
+
     const idx = menuItems.findIndex(item => item.value === activatedMenu);
     if (idx !== -1 && btnRefs.current[idx]) {
       const btn = btnRefs.current[idx];
@@ -50,6 +58,16 @@ const BottomMenu = () => {
       setIndicatorLeft(left);
       // animate CSS var for notch center (circle center)
       animateActiveX(left + 32);
+      // ensure notch is visible
+      if (barRef.current && defaultNotchRRef.current) {
+        barRef.current.style.setProperty("--notch-r", defaultNotchRRef.current);
+      }
+    }
+    else {
+      // no active item → hide notch by setting radius to 0
+      if (barRef.current) {
+        barRef.current.style.setProperty("--notch-r", "0px");
+      }
     }
   }, [activatedMenu, menuItems]);
 
