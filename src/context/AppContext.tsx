@@ -11,6 +11,7 @@ export const AppProvider = ({ children }: any) => {
     const [selectedBlock, setSelectedBlock] = useState<string | null>(null);
     const [selectedUnit, setSelectedUnit] = useState<string | null>(null);
     const [activatedMenu, setActivatedMenu] = useState<string>("");
+    const [selectedLevel, setSelectedLevel] = useState<string | null>(null);
 
     useEffect(() => {
         const handleResize = () => {
@@ -39,6 +40,8 @@ export const AppProvider = ({ children }: any) => {
                 setSelectedUnit,
                 activatedMenu,
                 setActivatedMenu,
+                selectedLevel,
+                setSelectedLevel,
             }}
         >
             {children}

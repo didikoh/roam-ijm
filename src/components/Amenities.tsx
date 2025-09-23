@@ -3,7 +3,6 @@ import amenityCommercial from "@assets/amenities/amenity_commercial.webp";
 import amenityEducation from "@assets/amenities/amenity_education.webp";
 import amenityMedical from "@assets/amenities/amenity_medical.webp";
 import amenityRts from "@assets/amenities/amenity_rts.webp";
-import amenityDistance from "@assets/amenities/amenity_distance.webp";
 import { useAppContext } from "../context/AppContext";
 
 type AmenityType =

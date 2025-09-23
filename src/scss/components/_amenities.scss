@@ -5,12 +5,12 @@
   left: 3rem;
   transform: translateY(-50%);
 
-    &__container {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-      user-select: none;
-    }
+  &__container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    user-select: none;
+  }
 }
 
 .amenities-container hr {
@@ -31,21 +31,21 @@
 
 .amenity {
   color: #fff;
-  background: #606060;
+  background-color: #192f5a;
   border: none;
   border-radius: 20px;
   padding: 10px 24px;
   cursor: pointer;
-  transition: background 0.3s;
+  transition: background-color 0.3s;
   display: flex;
   align-items: center;
   gap: 1rem;
   width: 200px;
-  border: 2px solid #ccc;
+  border: 1px solid #f47721;
 }
 
 .amenity.active {
-  background: #26997d;
+  background-color:  #f47721 
 }
 .amenity img {
   height: 24px;
@@ -55,12 +55,12 @@
 .amenity span {
   text-align: left;
   font-size: 0.8rem;
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   line-height: normal;
 }
 
 @media (hover: hover) {
   .amenity:hover {
-    background: #26997d;
+    background-color: #ffab71 
   }
 }

@@ -13,14 +13,9 @@ import {
   ImportMeshAsync,
   CubeTexture,
   ShadowGenerator,
-  VertexBuffer,
-  DefaultRenderingPipeline,
-  ImageProcessingConfiguration,
-  SSAO2RenderingPipeline,
   Animation,
   QuadraticEase,
   EasingFunction,
-  Mesh,
 } from "@babylonjs/core"; // 导入 Babylon.js 核心库
 import "@babylonjs/loaders"; // 导入 Babylon.js 的加载器模块
 import "@babylonjs/inspector"; // 导入 Babylon.js 的 Inspector 模块
@@ -28,7 +23,7 @@ import { Inspector } from "@babylonjs/inspector";
 import { useAppContext } from "../context/AppContext";
 import { enableBillboardPlot } from "../sceneUlti/billboard";
 import { resetCameraPos } from "../sceneUlti/camera";
-import { applyHighlightLayer } from "../sceneUlti/VisualEffect";
+import { applyHighlightLayer, clearHighlightLayer } from "../sceneUlti/VisualEffect";
 
 export const shouldEnableShadow = (engine: Engine): boolean => {
   const isMobile = /Android|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i.test(navigator.userAgent);
@@ -72,6 +67,9 @@ const MyScene = () => {
 
   useEffect(() => {
     selectedUnitRef.current = selectedUnit;
+    if(selectedUnit == null){
+      clearHighlightLayer("selected");
+    }
   }, [selectedUnit])
 
   useEffect(() => {
