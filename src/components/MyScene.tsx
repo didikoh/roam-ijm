@@ -313,7 +313,7 @@ const MyScene = () => {
             return;
           }
 
-          const KNOWN_TOTAL = 75224512;
+          const KNOWN_TOTAL = 75313364;
 
           // 加载模型
           ImportMeshAsync("./models/roam.glb", scene, {

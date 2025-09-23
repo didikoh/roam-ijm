@@ -20,7 +20,7 @@ const Concept = () => {
         <div className="concept-left">
           <div className="concept-left__logoWrap">
             <img
-              src="/ROAM Logo color version-03.png"
+              src="./ROAM Logo color version-03.png"
               alt="ROAM Logo"
               className="concept-left__logo"
             />
@@ -70,7 +70,7 @@ const Concept = () => {
           {selectedConcept === "introduction" && (
             <>
               <img
-                src="/brochure 1.png"
+                src="./brochure 1.png"
                 alt="Brochure"
                 className="concept-right__brochure"
               />
@@ -87,7 +87,7 @@ const Concept = () => {
           {selectedConcept === "connect" && (
             <>
               <img
-                src="/brochure 2.png"
+                src="./brochure 2.png"
                 alt="Brochure"
                 className="concept-right__brochure"
               />

@@ -20,7 +20,7 @@ const Location = () => {
         <div className="location-left">
           <div className="location-left__logoWrap">
             <img
-              src="/ROAM Logo color version-03.png"
+              src="./ROAM Logo color version-03.png"
               alt="ROAM Logo"
               className="location-left__logo"
             />
@@ -62,7 +62,7 @@ const Location = () => {
             <>
               <div className="location-right__main">
                 <img
-                  src="/roam-map 1.png"
+                  src="./roam-map 1.png"
                   alt="Map"
                   className="location-right__map"
                 />
@@ -86,9 +86,9 @@ const Location = () => {
                     </p>
                   </div>
                 <div className="location-right__gallery">
-                  <img src="/image 15.png" alt="Completed" />
-                  <img src="/image 16.png" alt="Under construction" />
-                  <img src="/image 17.png" alt="New launch" />
+                  <img src="./image 15.png" alt="Completed" />
+                  <img src="./image 16.png" alt="Under construction" />
+                  <img src="./image 17.png" alt="New launch" />
                 </div>
                 </div>
               </div>
@@ -97,7 +97,7 @@ const Location = () => {
           {selectedLocation === "location" && (
             <div className="location-right__main">
               <img
-                src="/location-statistic.png"
+                src="./location-statistic.png"
                 alt="Location"
                 className="location-right__statistic"
               />

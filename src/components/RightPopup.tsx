@@ -95,6 +95,7 @@ const RightPopup = () => {
                   min={0}
                   max={allowedValues.length - 1}
                   step={1}
+                  defaultValue={1}
                   value={allowedValues.indexOf(selectedSQFT ?? allowedValues[1])}
                   className="right-popup__range"
                   onChange={e => {

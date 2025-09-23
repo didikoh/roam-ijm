@@ -17,8 +17,8 @@
     align-items: center;
     justify-content: center;
     width: 90%;
-    max-width: 1200px;
-    height: 70vh;
+    height: 85vh; // 增加高度，为点状导航留出空间
+    max-height: calc(100vh - 100px); // 防止超出屏幕
   }
 
   &__content {
@@ -31,14 +31,26 @@
     border-radius: 10px;
     overflow: hidden;
     background: #000;
-    max-height: 100%;
+    height: 100%; // 使用容器的完整高度
+    min-height: 400px; // 设置最小高度
   }
 
-  &__image,
-  &__video {
-    width: 100%;
-    height: auto;
+  &__image {
+    max-width: 100%;
     max-height: 100%;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    display: block;
+  }
+
+  &__video {
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    min-width: 60%; // 设置最小宽度，确保不会太小
+    min-height: 60%; // 设置最小高度，确保不会太小
     object-fit: contain;
     display: block;
   }
@@ -104,8 +116,12 @@
   &__dots {
     display: flex;
     gap: 12px;
-    margin-top: 30px;
+    margin-top: 20px; // 减少间距
     justify-content: center;
+    position: absolute;
+    bottom: 20px; // 固定在底部
+    left: 50%;
+    transform: translateX(-50%);
   }
 
   &__dot {
@@ -134,11 +150,13 @@
   .gallery {
     &__container {
       width: 95%;
-      height: 60vh;
+      height: 80vh; // 移动端也增加高度
+      max-height: calc(100vh - 80px);
     }
 
     &__content {
       margin: 0 20px;
+      min-height: 300px; // 移动端最小高度
     }
 
     &__arrow {
@@ -174,7 +192,7 @@
 
     &__dots {
       gap: 8px;
-      margin-top: 20px;
+      bottom: 15px; // 移动端底部位置
     }
   }
 }
