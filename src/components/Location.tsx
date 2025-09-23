@@ -47,11 +47,11 @@ const Location = () => {
             </button>
             <button
               className={`location-nav-item ${
-                selectedLocation === "transportation" ? "active" : ""
+                selectedLocation === "360 Location" ? "active" : ""
               }`}
-              onClick={() => setSelectedLocation("transportation")}
+              onClick={() => setSelectedLocation("360 Location")}
             >
-              <span className="location-nav-text">Transportation</span>
+              <span className="location-nav-text">360 Location</span>
               <span className="location-nav-number">03</span>
             </button>
           </div>

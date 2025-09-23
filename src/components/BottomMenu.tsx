@@ -14,7 +14,7 @@ const BottomMenu = () => {
   const animRef = useRef<number | null>(null);
   const defaultNotchRRef = useRef<string | null>(null);
 
-  const animateActiveX = (toPx: number, durationMs = 400) => {
+  const animateActiveX = (toPx: number, durationMs = 328) => {
     if (!barRef.current) return;
     // cancel previous anim
     if (animRef.current) cancelAnimationFrame(animRef.current);

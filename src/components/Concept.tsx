@@ -14,7 +14,7 @@ const Concept = () => {
         onClick={() => setActivatedMenu("")}
         aria-label="Close concept panel"
       >
-        X
+        x
       </button>
       <div className="concept-container">
         <div className="concept-left">
