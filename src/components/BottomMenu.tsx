@@ -14,8 +14,8 @@ const BottomMenu = () => {
   const menuItems = [
     { img: SelectConcept, alt: "Concept", label: "CONCEPT", value: 'concept' },
     { img: SelectLocation, alt: "Location", label: "LOCATION", value: 'location' },
-    { img: AiButton, alt: "AI", label: "AI", value: 'ai' },
-    { img: Select360VR, alt: "360 VR", label: "360 VR", value: '360vr' },
+    { img: AiButton, alt: "AI Chatbot", label: "AI", value: 'ai' },
+    { img: Select360VR, alt: "Gallery", label: "Gallery", value: 'gallery' },
     { img: SelectRegister, alt: "Register", label: "REGISTER", value: 'register' },
   ];
 

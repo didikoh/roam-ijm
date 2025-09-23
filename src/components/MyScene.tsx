@@ -16,6 +16,7 @@ import {
   Animation,
   QuadraticEase,
   EasingFunction,
+  AbstractMesh,
 } from "@babylonjs/core"; // 导入 Babylon.js 核心库
 import "@babylonjs/loaders"; // 导入 Babylon.js 的加载器模块
 import "@babylonjs/inspector"; // 导入 Babylon.js 的 Inspector 模块
@@ -38,7 +39,10 @@ export const shouldEnableShadow = (engine: Engine): boolean => {
 }
 
 const MyScene = () => {
-  const { setProgress, selectedBlock, setSelectedBlock, selectedUnit, setSelectedUnit, resetCamRef } = useAppContext();
+  const { setProgress, selectedBlock, setSelectedBlock,
+    selectedUnit, setSelectedUnit, resetCamRef,
+    selectedLevel
+  } = useAppContext();
   const onProgress = setProgress;
   const canvasRef = useRef(null); // 使用 useRef 创建一个引用，用于绑定到 canvas 元素
   const [model, setModel] = useState(); // 使用 useState 创建一个状态，用于存储加载的模型
@@ -51,12 +55,14 @@ const MyScene = () => {
   const selectedBlockRef = useRef<string | null>(null);
   const selectedUnitRef = useRef<string | null>(null);
 
+  const allLevels = useRef<AbstractMesh[]>([]);
+
   useEffect(() => {
     selectedBlockRef.current = selectedBlock;
     console.log("Selected Block:", selectedBlock);
     if (selectedBlock != null) {
       if (currentCamera) {
-        currentCamera.panningSensibility = 0; // 禁用平移
+        currentCamera.panningSensibility = 500; // 禁用平移
       }
     } else {
       if (currentCamera) {
@@ -67,14 +73,49 @@ const MyScene = () => {
 
   useEffect(() => {
     selectedUnitRef.current = selectedUnit;
-    if(selectedUnit == null){
+    if (selectedUnit == null) {
       clearHighlightLayer("selected");
     }
   }, [selectedUnit])
 
   useEffect(() => {
+    console.log("Selected Level:", selectedLevel);
+    if (selectedLevel) {
+      allLevels.current.forEach(level => {
+        const levelNumber = Number(level.name.charAt(2)); // 123
+        if (isNaN(levelNumber)) {
+          if (level.name == "C_Mid_plate") {
+            level.setEnabled(selectedLevel >= 3);
+          }
+          else if (level.name == "C_Btm_plate") {
+            level.setEnabled(selectedLevel >= 2);
+          } else {
+            level.setEnabled(false);
+          }
+        } else {
+          if (levelNumber <= selectedLevel) {
+            level.setEnabled(true);
+          } else {
+            level.setEnabled(false);
+          }
+        }
+      });
+    } else {
+      allLevels.current.forEach(level => {
+        level.setEnabled(true);
+      })
+    }
+  }, [selectedLevel])
+
+
+  useEffect(() => {
     if (model && currentScene && currentCamera) {
       onProgress(105);
+
+      allLevels.current = currentScene.meshes.filter(m => m.name.startsWith("C-")
+        || m.name == "C_Roof" || m.name == "C_Mid_plate" || m.name == "C_Btm_plate" || m.name == "C_Panel_01"
+      );
+
       // const minX = -600, maxX = 200, minY = 70, maxY = 600, minZ = -600, maxZ = 400;
       // 添加监听器以记录相机位置和目标和限制相机目标范围
       currentCamera.onViewMatrixChangedObservable.add(() => {
@@ -92,10 +133,10 @@ const MyScene = () => {
           const pickedMesh = pointerInfo.pickInfo?.pickedMesh;
           if (pickedMesh) {
             if (selectedBlockRef.current == null) {
-              if (pickedMesh.name.startsWith("C-")) {
+              if (pickedMesh.name.startsWith("C-") || pickedMesh.name.startsWith("C_")) {
                 console.log("Picked Mesh:", pickedMesh.name);
                 setSelectedBlock("Block C");
-                handleFocus("Plane.017", 60);
+                handleFocus("C_Middle_Block", 60);
               }
             }
 
@@ -110,7 +151,7 @@ const MyScene = () => {
                 }
                 handleFocus(pickedMesh, 30);
                 const cleanedName = pickedMesh.name.replace("_primitive0", "_primitive1")
-                applyHighlightLayer(currentScene, cleanedName,"selected", new Color3(0.8, 0.8, 0));
+                applyHighlightLayer(currentScene, cleanedName, "selected", new Color3(0.8, 0.8, 0));
               }
             }
           }
@@ -258,7 +299,7 @@ const MyScene = () => {
             return;
           }
 
-          // const KNOWN_TOTAL = 100;
+          const KNOWN_TOTAL = 73448576;
 
           // 加载模型
           ImportMeshAsync("./models/roam.glb", scene, {
@@ -270,8 +311,8 @@ const MyScene = () => {
                 onProgress(percent);
               } else {
                 // gzip + 我们知道大小
-                // const percent = (ev.loaded / KNOWN_TOTAL) * 100;
-                onProgress(ev.loaded);
+                const percent = (ev.loaded / KNOWN_TOTAL) * 100;
+                onProgress(percent);
               }
             },
           })
@@ -326,7 +367,7 @@ const MyScene = () => {
           camera.angularSensibilityY = 2500; // 垂直旋转灵敏度
           camera.angularSensibilityX = 2500; // 水平旋转灵敏度
           camera.minZ = 1; // 最小可视距离（靠得最近）
-          camera.maxZ = 1000; // 最大可视距离（最远能看到多远）
+          camera.maxZ = 17500; // 最大可视距离（最远能看到多远）
           camera.speed = 1; // 相机移动速度
           camera.fov = 1;
 
