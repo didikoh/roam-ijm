@@ -8,13 +8,47 @@
   &__container {
     position: relative;
     padding: 10px 20px;
-    background-color: #ffffff;
+    background-color: transparent; // background rendered by ::before so children aren't masked
     border-radius: 8px;
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 32px;
     box-sizing: border-box;
+    // notch variables
+    --active-x: 50%;
+    --notch-r: 39px;
+    --notch-y: 14px; // vertical offset from the top edge
+    --halo: 0 10px 24px rgba(0, 0, 0, 0.28);
+
+    /* draw the white bar with a transparent notch BELOW the content */
+    &::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: #fff;
+      border-radius: 8px;
+      z-index: 0;
+      /* punch the notch out of this background only */
+      -webkit-mask: radial-gradient(circle var(--notch-r) at var(--active-x) var(--notch-y), transparent calc(var(--notch-r) - 1px), #000 var(--notch-r));
+              mask: radial-gradient(circle var(--notch-r) at var(--active-x) var(--notch-y), transparent calc(var(--notch-r) - 1px), #000 var(--notch-r));
+      transition: mask-position 0.4s cubic-bezier(.4,0,.2,1);
+    }
+
+    /* soft halo beneath the notch for depth */
+    &::after {
+      content: "";
+      position: absolute;
+      top: calc(var(--notch-y) - var(--notch-r));
+      left: calc(var(--active-x) - var(--notch-r));
+      width: calc(var(--notch-r) * 2);
+      height: calc(var(--notch-r) * 2);
+      background: radial-gradient(closest-side, rgba(0, 0, 0, 0), rgba(0,0,0,0) 70%);
+      filter: blur(1.5px);
+      pointer-events: none;
+      z-index: 0; /* sits under items but above ::before due to same stacking context */
+      transition: left 0.35s cubic-bezier(.4,0,.2,1);
+    }
   }
 
   &__item {
@@ -73,5 +107,6 @@
     border-radius: 50%;
     top: -20px;
     box-shadow: 0 4px 24px 0 #f47721; // 透明阴影
+    z-index: 1;
   }
 }
