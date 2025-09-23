@@ -216,7 +216,7 @@
         }
 
         &__title {
-            font-size: 4rem;
+            font-size: clamp(2.5rem, 3vw, 4rem);
             font-weight: 700;
             margin: 0;
             line-height: 1.2;
@@ -233,7 +233,7 @@
             padding-right: 150px;
 
             p {
-                font-size: 1.4rem;
+                font-size: clamp(1rem, 1.4vw, 1.4rem);
                 color: #333;
                 margin: 0;
             }
