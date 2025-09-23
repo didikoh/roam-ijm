@@ -6,8 +6,8 @@
   right: 1rem;
   bottom: 1rem;
   overflow: hidden;
-  border-radius: 20px 20px 0 0;
   box-sizing: border-box;
+  box-shadow: 0 20px 60px rgba(255, 132, 71, 0.788);
 }
 
 .chatbot-container {
@@ -25,7 +25,7 @@
     padding: 15px 22px;
     align-items: center;
     justify-content: space-between;
-    background: #26977b;
+    background: linear-gradient(90deg, #192d54 0%, #3764ba 100%);
     width: 100%;
     box-sizing: border-box;
   }
@@ -36,6 +36,7 @@
     align-items: center;
     height: 24px;
     img {
+      display: none;
       height: 30px;
     }
     h2 {
@@ -179,7 +180,7 @@
     font-size: 1.15rem;
     color: white;
     border-radius: 50%;
-    background: #26977b;
+    background:   #192d54 0%;
     transition: 0.2s ease;
   }
 

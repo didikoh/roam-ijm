@@ -2,52 +2,26 @@ export const ame_types = [
   {
     type: "commercial",
     icon: "commercial.webp",
-    content: [
-      "China Town",
-      "Country Garden Danga Bay",
-      "GALLERIA@KOTARAYA",
-      "Johor Bahru City Square",
-      "KOMTAR JBCC",
-      "KSL City Mall",
-      "Plaza Pelangi",
-      "R&F Mall",
-      "The Mall, Mid Valley Southkey",
-      "Zenith Lifestyle Centre",
-    ],
+    content: ["Eco Sanctuary", "Sanctuary Mall", "Gamuda Quayside"],
   },
   {
-    type: "rts",
-    icon: "rts.webp",
-    content: [
-      "Bukit Chagar RTS Station",
-      "JB Sentral",
-      "Larkin Sentral",
-      "Woodlands North RTS Station",
-    ],
+    type: "transport",
+    icon: "transport.webp",
+    content: ["SKVE_Highway"],
   },
   {
     type: "medical",
     icon: "medical.webp",
-    content: [
-      "Columbia Asia Hospital",
-      "KPJ Johor Specialist Hospital",
-      "KPJ Puteri Specialist Hospital",
-      "Maria Hospital",
-    ],
+    content: ["FamFirst Clinic", "Klinik Mediviron Rimbayu"],
   },
   {
-    type: "education-private",
-    icon: "education-private.webp",
+    type: "education",
+    icon: "education.webp",
     content: [
-      "Sri Ara Schools",
-      "Utama Schools Johor Bahru",
-      "Starclub International Private School",
+      "Tenby International School Tropicana Metropark",
+      "Mahsa University",
+      "Oasis International School",
     ],
-  },
-  {
-    type: "education-public",
-    icon: "education-public.webp",
-    content: ["Tun Fatimah School"],
   },
   {
     type: "all",
@@ -63,5 +37,5 @@ export const AreaLabels = [
   "Taman Pelangi",
   "Tanjung Puteri",
   "Text_To/From JB CBD",
-  "Text_To/From Semai"
+  "Text_To/From Semai",
 ];

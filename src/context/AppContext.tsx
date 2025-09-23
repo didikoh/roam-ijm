@@ -11,6 +11,10 @@ export const AppProvider = ({ children }: any) => {
     const [selectedBlock, setSelectedBlock] = useState<string | null>(null);
     const [selectedUnit, setSelectedUnit] = useState<string | null>(null);
     const [activatedMenu, setActivatedMenu] = useState<string>("");
+    const [selectedType, setSelectedType] = useState<string | null>(null);
+    const [selectedLevel, setSelectedLevel] = useState<number | null>(null);
+    const [selectedSQFT, setSelectedSQFT] = useState<string | null>(null);
+    const [perspectiveIndex, setPerspectiveIndex] = useState<string | null>(null);
 
     useEffect(() => {
         const handleResize = () => {
@@ -21,6 +25,13 @@ export const AppProvider = ({ children }: any) => {
         window.addEventListener("resize", handleResize);
         handleResize(); // 初始化检查窗口大小
     }, []);
+
+    const resetFilter = () => {
+        setSelectedUnit(null);
+        setSelectedLevel(null);
+        setSelectedType(null);
+        setSelectedSQFT(null);
+    }
 
     return (
         <AppContext.Provider
@@ -39,6 +50,15 @@ export const AppProvider = ({ children }: any) => {
                 setSelectedUnit,
                 activatedMenu,
                 setActivatedMenu,
+                selectedLevel,
+                setSelectedLevel,
+                selectedType,
+                setSelectedType,
+                selectedSQFT,
+                setSelectedSQFT,
+                resetFilter,
+                perspectiveIndex,
+                setPerspectiveIndex
             }}
         >
             {children}

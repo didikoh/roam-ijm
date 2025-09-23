@@ -66,7 +66,7 @@ const ChatForm = ({
     <form action="#" className="chat-form" onSubmit={handleFormSubmit}>
       <input
         ref={inputRef}
-        placeholder="Ask a question about Larkinton..."
+        placeholder="Ask a question about Roam..."
         className="message-input"
         disabled={isDisabled}
         required

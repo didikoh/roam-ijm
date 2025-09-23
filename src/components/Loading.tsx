@@ -1,6 +1,6 @@
 import bg from '@assets/loading/background.png'
 import logo from '@assets/loading/logo.png'
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useAppContext } from '../context/AppContext';
 
 const Loading = () => {
